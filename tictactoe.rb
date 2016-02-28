@@ -37,11 +37,17 @@ class TicTacToe
     end
     false
   end
+
+  def display_board
+    puts "#{@gameboard[0]}|#{@gameboard[1]}|#{@gameboard[2]}"
+    puts "------"
+    puts "#{@gameboard[3]}|#{@gameboard[4]}|#{@gameboard[5]}"
+    puts "------"
+    puts "#{@gameboard[6]}|#{@gameboard[7]}|#{@gameboard[8]}"
+    puts " "
+    puts "Player 1: #{player1[0]}, Player 2: #{player2[0]}"
+  end
 end
 
-game = TicTacToe.new(1,2)
-game.gameboard = [3,3,3,
-                  3,3,3,
-                  3,3,3]
-
-game.update_score
+game = TicTacToe.new("X","O")
+game.display_board
