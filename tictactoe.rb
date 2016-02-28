@@ -47,7 +47,19 @@ class TicTacToe
     puts " "
     puts "Player 1: #{player1[0]}, Player 2: #{player2[0]}"
   end
+
+  def go(spot)
+    @gameboard[spot-1] = player1[0]
+    update_score()
+  end
+
 end
 
 game = TicTacToe.new("X","O")
+game.display_board
+game.go(1)
+game.display_board
+game.go(2)
+game.display_board
+game.go(3)
 game.display_board
