@@ -1,7 +1,5 @@
 class TicTacToe
   attr_accessor :gameboard
-  attr_accessor :player1
-  attr_accessor :player2
 
   @@winning_scores = [7,56,448,73,146,292,84,273]
 
@@ -16,13 +14,14 @@ class TicTacToe
     @player2 = [player2_char, 0, turn2]
     @gameboard = []
     9.times { @gameboard << " " }
+    display_board()
   end
 
   def update_score
-    player1[1] = calculate_score(player1[0])
-    puts "Chicken dinner #{player1[0]}!" if winner?(player1)
-    player2[1] = calculate_score(player2[0])
-    puts "Chicken dinner #{player2[0]}!" if winner?(player2)
+    @player1[1] = calculate_score(@player1[0])
+    puts "Chicken dinner #{@player1[0]}!" if winner?(@player1)
+    @player2[1] = calculate_score(@player2[0])
+    puts "Chicken dinner #{@player2[0]}!" if winner?(@player2)
   end
 
   def calculate_score(player_char)
@@ -48,25 +47,33 @@ class TicTacToe
     puts "  ------ \t ------"
     puts "  7|8|9 \t #{@gameboard[6]}|#{@gameboard[7]}|#{@gameboard[8]}"
     puts "\n"
-    puts "\t#{player1[0]}'s turn!" if player1[2] == 1
-    puts "\t#{player2[0]}'s turn!" if player2[2] == 1
-    # Swap turns
+    player = get_player()
+    puts "\t#{player[0]}'s turn!"
+  end
+
+  def next_turn
     @player1[2],@player2[2] = @player2[2],@player1[2]
   end
 
   def go(spot)
-    @gameboard[spot-1] = player1[0]
+    player = get_player()
+    @gameboard[spot-1] = player[0]
     update_score()
+    next_turn()
+    display_board()
   end
 
+  def get_player
+    return @player1 if @player1[2] == 1
+    return @player2 if @player2[2] == 1
+    raise NoPlayerFound "Neither player's turn is set!"
+  end
 end
 
 game = TicTacToe.new("X","O")
-game.display_board
 
 loop do
   print "Choose: "
   choice = gets.chomp.to_i
   game.go(choice)
-  game.display_board
 end
