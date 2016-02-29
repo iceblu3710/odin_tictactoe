@@ -10,8 +10,10 @@ class TicTacToe
          6 => 64, 7 => 128, 8 => 256,}
 
   def initialize(player1_char, player2_char)
-    @player1 = [player1_char, 0]
-    @player2 = [player2_char, 0]
+    turn1 = rand(2)
+    turn2 = 1 unless turn1 == 1
+    @player1 = [player1_char, 0, turn1]
+    @player2 = [player2_char, 0, turn2]
     @gameboard = []
     9.times { @gameboard << " " }
   end
@@ -39,13 +41,17 @@ class TicTacToe
   end
 
   def display_board
-    puts "#{@gameboard[0]}|#{@gameboard[1]}|#{@gameboard[2]}"
-    puts "------"
-    puts "#{@gameboard[3]}|#{@gameboard[4]}|#{@gameboard[5]}"
-    puts "------"
-    puts "#{@gameboard[6]}|#{@gameboard[7]}|#{@gameboard[8]}"
-    puts " "
-    puts "Player 1: #{player1[0]}, Player 2: #{player2[0]}"
+    puts "\n\n\t TicTacToe \n\n"
+    puts "  1|2|3 \t #{@gameboard[0]}|#{@gameboard[1]}|#{@gameboard[2]}"
+    puts "  ------ \t ------"
+    puts "  4|5|6 \t #{@gameboard[3]}|#{@gameboard[4]}|#{@gameboard[5]}"
+    puts "  ------ \t ------"
+    puts "  7|8|9 \t #{@gameboard[6]}|#{@gameboard[7]}|#{@gameboard[8]}"
+    puts "\n"
+    puts "\t#{player1[0]}'s turn!" if player1[2] == 1
+    puts "\t#{player2[0]}'s turn!" if player2[2] == 1
+    # Swap turns
+    @player1[2],@player2[2] = @player2[2],@player1[2]
   end
 
   def go(spot)
@@ -56,10 +62,5 @@ class TicTacToe
 end
 
 game = TicTacToe.new("X","O")
-game.display_board
-game.go(1)
-game.display_board
-game.go(2)
-game.display_board
-game.go(3)
+game.go(5)
 game.display_board
