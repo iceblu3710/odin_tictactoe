@@ -15,13 +15,20 @@ class TicTacToe
     @gameboard = []
     9.times { @gameboard << " " }
     display_board()
+    greet_player()
   end
 
   def update_score
     @player1[1] = calculate_score(@player1[0])
-    puts "Chicken dinner #{@player1[0]}!" if winner?(@player1)
     @player2[1] = calculate_score(@player2[0])
-    puts "Chicken dinner #{@player2[0]}!" if winner?(@player2)
+    congrats(@player1) if winner?(@player1)
+    congrats(@player2) if winner?(@player2)
+  end
+
+  def congrats(player)
+    display_board()
+    puts "\n\n\t CONGRAGULATIONS PLAYER #{player[0]}, YOU WON!\n\n"
+    exit()
   end
 
   def calculate_score(player_char)
@@ -47,6 +54,9 @@ class TicTacToe
     puts "  ------ \t ------"
     puts "  7|8|9 \t #{@gameboard[6]}|#{@gameboard[7]}|#{@gameboard[8]}"
     puts "\n"
+  end
+
+  def greet_player
     player = get_player()
     puts "\t#{player[0]}'s turn!"
   end
@@ -61,6 +71,7 @@ class TicTacToe
     update_score()
     next_turn()
     display_board()
+    greet_player()
   end
 
   def get_player
