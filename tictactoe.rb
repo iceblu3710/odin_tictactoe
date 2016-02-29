@@ -67,11 +67,28 @@ class TicTacToe
 
   def go(spot)
     player = get_player()
-    @gameboard[spot-1] = player[0]
-    update_score()
-    next_turn()
-    display_board()
-    greet_player()
+    if fill_spot?(spot, player[0])
+      update_score()
+      next_turn()
+      display_board()
+      greet_player()
+    end
+  end
+
+  def fill_spot?(spot, mark)
+    if @gameboard[spot-1] == " " then
+      @gameboard[spot-1] = mark
+      return true
+    else
+      spot_taken()
+      display_board()
+      greet_player()
+      return false
+    end
+  end
+
+  def spot_taken
+    puts "\n\n\t That spot is already taken!"
   end
 
   def get_player
