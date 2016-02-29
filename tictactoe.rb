@@ -62,5 +62,11 @@ class TicTacToe
 end
 
 game = TicTacToe.new("X","O")
-game.go(5)
 game.display_board
+
+loop do
+  print "Choose: "
+  choice = gets.chomp.to_i
+  game.go(choice)
+  game.display_board
+end
