@@ -1,47 +1,63 @@
 class TicTacToe
   attr_accessor :gameboard
 
-  @@winning_scores = [7,56,448,73,146,292,84,273]
+  WINNING_SCORES = [7,56,448,73,146,292,84,273]
 
-  @@score_hsh = {0 => 1, 1 => 2, 2 => 4,
+  SCORE_HASH = {0 => 1, 1 => 2, 2 => 4,
          3 => 8, 4 => 16, 5 => 32,
-         6 => 64, 7 => 128, 8 => 256,}
+         6 => 64, 7 => 128, 8 => 256}
+
+  class Player
+    attr_reader   :mark
+    attr_accessor :score
+    attr_accessor :turn
+
+    def initialize(player_mark)
+      @mark = player_mark
+      @score = 0
+      @turn = 0
+    end
+  end
 
   def initialize(player1_char, player2_char)
-    turn1 = rand(2)
-    turn2 = 1 unless turn1 == 1
-    @player1 = [player1_char, 0, turn1]
-    @player2 = [player2_char, 0, turn2]
+    @player1 = Player.new(player1_char)
+    @player2 = Player.new(player2_char)
+    set_turn()
     @gameboard = []
     9.times { @gameboard << " " }
     display_board()
     greet_player()
   end
 
+  def set_turn()
+    @player1.turn = rand(2)
+    @player2.turn = 1 unless @player1.turn == 1
+  end
+
   def update_score
-    @player1[1] = calculate_score(@player1[0])
-    @player2[1] = calculate_score(@player2[0])
-    congrats(@player1) if winner?(@player1)
-    congrats(@player2) if winner?(@player2)
+    @player1.score = calculate_score(@player1.mark)
+    @player2.score = calculate_score(@player2.mark)
+    congrats(@player1.mark) if winner?(@player1.score)
+    congrats(@player2.mark) if winner?(@player2.score)
   end
 
   def congrats(player)
     display_board()
-    puts "\n\n\t CONGRAGULATIONS PLAYER #{player[0]}, YOU WON!\n\n"
+    puts "\n\n\t CONGRAGULATIONS PLAYER #{player}, YOU WON!\n\n"
     exit()
   end
 
-  def calculate_score(player_char)
+  def calculate_score(mark)
     score = 0
     @gameboard.each_with_index do |char, i|
-      score += @@score_hsh[i] if char == player_char
+      score += SCORE_HASH[i] if char == mark
     end
     score
   end
 
-  def winner?(player)
-    @@winning_scores.each do |score|
-      return true if player[1] & score == score
+  def winner?(player_score)
+    WINNING_SCORES.each do |score|
+      return true if player_score & score == score
     end
     false
   end
@@ -57,17 +73,17 @@ class TicTacToe
   end
 
   def greet_player
-    player = get_player()
-    puts "\t#{player[0]}'s turn!"
+    player_mark = get_player()
+    puts "\t#{player_mark}'s turn!"
   end
 
   def next_turn
-    @player1[2],@player2[2] = @player2[2],@player1[2]
+    @player1.turn, @player2.turn = @player2.turn, @player1.turn
   end
 
   def go(spot)
-    player = get_player()
-    if fill_spot?(spot, player[0])
+    player_mark = get_player()
+    if fill_spot?(spot, player_mark)
       update_score()
       next_turn()
       display_board()
@@ -75,9 +91,9 @@ class TicTacToe
     end
   end
 
-  def fill_spot?(spot, mark)
+  def fill_spot?(spot, player_mark)
     if @gameboard[spot-1] == " " then
-      @gameboard[spot-1] = mark
+      @gameboard[spot-1] = player_mark
       return true
     else
       spot_taken()
@@ -92,8 +108,8 @@ class TicTacToe
   end
 
   def get_player
-    return @player1 if @player1[2] == 1
-    return @player2 if @player2[2] == 1
+    return @player1.mark if @player1.turn == 1
+    return @player2.mark if @player2.turn == 1
     raise NoPlayerFound "Neither player's turn is set!"
   end
 end
