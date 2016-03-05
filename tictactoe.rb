@@ -1,8 +1,5 @@
 class TicTacToe
-  attr_accessor :gameboard
-
   WINNING_SCORES = [7,56,448,73,146,292,84,273]
-
   SCORE_HASH = {0 => 1, 1 => 2, 2 => 4,
          3 => 8, 4 => 16, 5 => 32,
          6 => 64, 7 => 128, 8 => 256}
@@ -23,10 +20,27 @@ class TicTacToe
     @player1 = Player.new(player1_char)
     @player2 = Player.new(player2_char)
     set_turn()
-    @gameboard = []
-    9.times { @gameboard << " " }
+    setup_board()
     display_board()
     greet_player()
+  end
+
+  def go(spot)
+    player_mark = get_player()
+    if fill_spot?(spot, player_mark)
+      update_score()
+      next_turn()
+      display_board()
+      greet_player()
+    end
+  end
+
+  private
+  # ----------------------------------------------------------------------------
+
+  def setup_board
+    @gameboard = []
+    9.times { @gameboard << " " }
   end
 
   def set_turn()
@@ -81,16 +95,6 @@ class TicTacToe
     @player1.turn, @player2.turn = @player2.turn, @player1.turn
   end
 
-  def go(spot)
-    player_mark = get_player()
-    if fill_spot?(spot, player_mark)
-      update_score()
-      next_turn()
-      display_board()
-      greet_player()
-    end
-  end
-
   def fill_spot?(spot, player_mark)
     if @gameboard[spot-1] == " " then
       @gameboard[spot-1] = player_mark
@@ -117,7 +121,7 @@ end
 game = TicTacToe.new("X","O")
 
 loop do
-  print "Choose: "
+  print "Choose spot (1..9): "
   choice = gets.chomp.to_i
-  game.go(choice)
+  game.go(choice) if choice.between?(1,9)
 end
