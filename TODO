@@ -1,8 +1,8 @@
-- Change @player's into struct as @player1[0] is unclear
-- What should be a public, protected or private class?
-- Remove as much knowledge of the classes from each method
-- Move game loop into TicTacToe#play
-- Console drawing GEM?
+D - Change @player's into struct as @player1[0] is unclear
+D - What should be a public, protected or private class?
+M - Remove as much knowledge of the classes from each method
+  - Move game loop into TicTacToe#play
+  - Console drawing GEM?
 
 
 
